@@ -1,0 +1,5 @@
+#查询容器
+docker ps | grep
+
+#进入容器
+docker exec -u 0 -it  /bin/bash
