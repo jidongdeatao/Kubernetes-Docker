@@ -1,0 +1,32 @@
+查询服务所在命令：
+登陆omcore-01虚机，su切换到root，然后执行如下命令
+/opt/paas/kubernetes/kubectl get pod --all-namespaces -o wide | grep -i elb       #查询manage面，查询OM面即manage换成om,g loble。 
+/opt/paas/kubernetes/kubectl get node manage-cluster6-263c3446-vbb13 -n manage -o yaml | grep address   #查询服务所在IP
+kubectl get svc |grep csc   #查询csc的节点IP
+kubectl describe svc |grep cse-bus
+kubectl get endpoints -nmanage  #查询开放性端口
+kubectl describe svc csc -nmanage    #查询监听端口的状态
+
+ /var/paas/kubernetes/kubectl --client-certificate=${PAAS_CRYPTO_PATH}/server.cer --client-key=${PAAS_CRYPTO_PATH}/server_key.pem --certificate-authority=${PAAS_CRYPTO_PATH}/ca.cer -s ${KUBERNETES_MASTER} describe svc csc -nmanage
+
+kubectl describe svc iam -nom
+
+添加证书命令：
+export KUBERNETES_MASTER=https://128.8.44.61:6443
+export PAAS_CRYPTO_PATH=/var/paas/srv/kubernetes
+/var/paas/kubernetes/kubectl --client-certificate
+/var/paas/kubernetes/kubectl --client-certificate=${PAAS_CRYPTO_PATH}/server.cer --client-key=${PAAS_CRYPTO_PATH}/server_key.pem --certificate-authority=${PAAS_CRYPTO_PATH}/ca.cer -s ${KUBERNETES_MASTER} get pod -nmanage -owide|grep controller
+/var/paas/kubernetes/kubectl --client-certificate=${PAAS_CRYPTO_PATH}/server.cer --client-key=${PAAS_CRYPTO_PATH}/server_key.pem --certificate-authority=${PAAS_CRYPTO_PATH}/ca.cer -s ${KUBERNETES_MASTER} get node manage-cluster2-d9a3ad7d-tpckv -n manage -o yaml  | grep address
+export PAAS_CRYPTO_PATH=/var/paas/srv/kubernetes
+alias kubectl="/var/paas/kubernetes/kubectl --client-certificate=/var/paas/srv/kubernetes/server.cer --client-key=/var/paas/srv/kubernetes/server_key.pem --certificate-authority=/var/paas/srv/kubernetes/ca.cer -s https://kubernetes.default.svc.cluster.local:443"
+
+
+查看配置文件：
+查看命令：登陆OM-CORE01节点
+cd /var/paas/kubernetes  ##(ls 看一下有没有kubectl文件，进行配置环境变量)
+export KUBERNETES_MASTER=https://128.8.44.61:31943
+export PAAS_CRYPTO_PATH=/var/paas/srv/kubernets
+alias k="/var/paas/kubernetes/kubectl --client-certificate=${PAAS_CRYPTO_PATH}/server.cer --client-key=${PAAS_CRYPTO_PATH}/server_key.pem --certificate-authority=${PAAS_CRYPTO_PATH}/ca.cer -s ${KUBERNETES_MASTER}"
+kubectl get namespace
+k get deployment -n manage | grep cfe-kube-apiserve
+k edit deployment cfe-kube-apiserver -n manage
