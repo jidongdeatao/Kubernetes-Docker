@@ -88,6 +88,58 @@ WordPress 提示要输入数据库参数。输入的参数如下。
 
 
 ##############################方法B#####################################
+上一部分的自建 WordPress 容器，还是挺麻烦的。其实不用这么麻烦，Docker 已经提供了官方 WordPress image，直接用那个就可以了。有了上一部分的基础，下面的操作就很容易理解了。
+3.1 基本用法
+首先，新建并启动 MySQL 容器。
+
+    $ docker container run \
+      -d \
+      --rm \
+      --name wordpressdb \
+      --env MYSQL_ROOT_PASSWORD=123456 \
+      --env MYSQL_DATABASE=wordpress \
+      mysql:5.7
+然后，基于官方的 WordPress image，新建并启动 WordPress 容器。
+
+    $ docker container run \
+      -d \
+      --rm \
+      --name wordpress \
+      --env WORDPRESS_DB_PASSWORD=123456 \
+      --link wordpressdb:mysql \
+      wordpress
+上面命令中，各个参数的含义前面都解释过了，其中环境变量WORDPRESS_DB_PASSWORD是 MySQL 容器的根密码。
+上面命令指定wordpress容器在后台运行，导致前台看不见输出，使用下面的命令查出wordpress容器的 IP 地址。
+
+    $ docker container inspect wordpress
+上面命令运行以后，会输出很多内容，找到IPAddress字段即可。我的机器返回的 IP 地址是172.17.0.3。
+浏览器访问172.17.0.3，就会看到 WordPress 的安装提示。
+3.2 WordPress 容器的定制
+到了上一步，官方 WordPress 容器的安装就已经成功了。但是，这种方法有两个很不方便的地方。
+        每次新建容器，返回的 IP 地址不能保证相同，导致要更换 IP 地址访问 WordPress。
+        WordPress 安装在容器里面，本地无法修改文件。
+解决这两个问题很容易，只要新建容器的时候，加两个命令行参数就可以了。
+先把刚才启动的 WordPress 容器终止（容器文件会自动删除）。
+
+    $ docker container stop wordpress
+然后，使用下面的命令新建并启动 WordPress 容器。
+
+     $ docker container run \
+      -d \
+      -p 127.0.0.2:8080:80 \
+      --rm \
+      --name wordpress \
+      --env WORDPRESS_DB_PASSWORD=123456 \
+      --link wordpressdb:mysql \
+      --volume "$PWD/wordpress":/var/www/html \
+      wordpress
+上面的命令跟前面相比，命令行参数只多出了两个。
+        -p 127.0.0.2:8080:80：将容器的 80 端口映射到127.0.0.2的8080端口。
+        --volume "$PWD/wordpress":/var/www/html：将容器的/var/www/html目录映射到当前目录的wordpress子目录。
+浏览器访问127.0.0.2:8080:80就能看到 WordPress 的安装提示了。而且，你在wordpress子目录下的每次修改，都会反映到容器里面。
+最后，终止这两个容器（容器文件会自动删除）。
+
+    $ docker container stop wordpress wordpressdb
 
 
 ##############################方法C#####################################
