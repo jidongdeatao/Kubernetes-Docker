@@ -39,3 +39,5 @@ CentOS7下-Docker安装：
 12、systemctl restart docker （第11、12步。为重启docker操作）
 13、docker run hello-world  运行官方镜像hello world文件,检验是否安装成功。
 
+CentOS7下-Docker-compose安装：
+
