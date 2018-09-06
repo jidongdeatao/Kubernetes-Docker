@@ -1,1 +1,42 @@
 Docker安装指南：
+
+CentOS7下-Docker安装：
+Docker安装
+
+系统要求CentOS 7.X 以上版本，内核至少3.10，64-bit
+
+1、  uname --r 检查内核版本
+2、  vi /etc/profile 修改代理设置（如果需要设置代理。内容如下，**为密码，密码要避免含有@符号）
+          http_proxy=http://userName:password@10.16.236.108:3128/
+          ftp_proxy="http://userName:*****@10.16.236.108:3128/" 
+          https_proxy="https://userName:*****@10.16.236.108:3128/" 
+          export https_proxy 
+          export http_proxy 
+          export ftp_proxy
+3、yum update 升级本地yum包
+4、tee /etc/yum.repos.d/docker.repo <<-'EOF'  添加yum 仓库配置（内容见下框）
+        [dockerrepo]
+
+        name=Docker Repository
+
+        baseurl=https://yum.dockerproject.org/repo/main/centos/7/
+
+        enabled=1
+
+        gpgcheck=1
+
+        gpgkey=https://yum.dockerproject.org/gpg
+
+        EOF
+
+5、yum install docker-engine 安装docker包
+6、service docker start 启动docker服务
+  #7-8步为需要配置docker程序代理
+7、mkdir /etc/systemd/system/docker.service.d
+8、touch /etc/systemd/system/docker.service.d/http-proxy.conf  如果需要代理，添加docker程序代理（内容见下框）
+  [Service]                                             例子 [Service]
+  Environment="HTTP_PROXY=http://proxy.ip.com:80"          Enviroment=”HTTP_PROXY=http://用户名：密码@代理地址：端口号” 
+
+11、systemctl daemon-reload
+12、systemctl restart docker （第11、12步。为重启docker操作）
+13、docker run hello-world  运行官方镜像hello world文件,检验是否安装成功。
