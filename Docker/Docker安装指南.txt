@@ -1,10 +1,8 @@
 Docker安装指南：
 
+一、
 CentOS7下-Docker安装：
-Docker安装
-
 系统要求CentOS 7.X 以上版本，内核至少3.10，64-bit
-
 1、  uname --r 检查内核版本
 2、  vi /etc/profile 修改代理设置（如果需要设置代理。内容如下，**为密码，密码要避免含有@符号）
           http_proxy=http://userName:password@10.16.236.108:3128/
