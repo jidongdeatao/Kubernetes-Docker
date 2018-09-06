@@ -33,7 +33,13 @@ image 是二进制文件。实际开发中，一个 image 文件往往通过继�
     
 七、实例：hello world
 国内连接 Docker 的官方仓库很慢，还会断线，需要将默认仓库改成国内的镜像网站，具体的修改方法:
+这里推荐使用官方镜像 registry.docker-cn.com 。下面是我的 Debian 系统的默认仓库修改方法，其他系统的修改方法参考官方文档。
+打开/etc/default/docker文件（需要sudo权限），在文件的底部加上一行。
+    DOCKER_OPTS="--registry-mirror=https://registry.docker-cn.com"
+然后，重启 Docker 服务。
+    $ sudo service docker restart
 
+现在就会自动从镜像仓库下载 image 文件了。
 首先，运行下面的命令，将 image 文件从仓库抓取到本地。
     $ docker image pull library/hello-world
 上面代码中，docker image pull是抓取 image 文件的命令。library/hello-world是 image 文件在仓库里面的位置，其中library是 image 文件所在的组，hello-world是 image 文件的名字。
