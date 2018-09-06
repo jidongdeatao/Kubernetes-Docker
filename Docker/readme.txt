@@ -3,7 +3,8 @@ http://www.ruanyifeng.com/blog/2018/02/docker-tutorial.html
 
 Docker简介：
     Linux 有一种虚拟化技术：Linux 容器（Linux Containers，缩写为 LXC）。
-    Linux 容器不是模拟一个完整的操作系统，而是对进程进行隔离。或者说，在正常进程的外面套了一个保护层。对于容器里面的进程来说，它接触到的各种资源都是虚拟的，从而实现与底层系统的隔离。
+    Linux 容器不是模拟一个完整的操作系统，而是对进程进行隔离。或者说，在正常进程的外面套了一个保护层。对于容器里面的进程来说，它接触到的各种资源
+    都是虚拟的，从而实现与底层系统的隔离。
     由于容器是进程级别的，相比虚拟机有很多优势。
 
  
@@ -22,9 +23,11 @@ Docker 是服务器----客户端架构。命令行运行docker命令的时候，
     $ sudo systemctl start docker
 
 六、image 文件
-Docker 把应用程序及其依赖，打包在 image 文件里面。只有通过这个文件，才能生成 Docker 容器。image 文件可以看作是容器的模板。Docker 根据 image 文件生成容器的实例。同一个 image 文件，可以生成多个同时运行的容器实例。
+Docker 把应用程序及其依赖，打包在 image 文件里面。只有通过这个文件，才能生成 Docker 容器。image 文件可以看作是容器的模板。Docker 根据 image
+文件生成容器的实例。同一个 image 文件，可以生成多个同时运行的容器实例。
 
-image 是二进制文件。实际开发中，一个 image 文件往往通过继承另一个 image 文件，加上一些个性化设置而生成。举例来说，你可以在 Ubuntu 的 image 基础上，往里面加入 Apache 服务器，形成你的 image。   
+image 是二进制文件。实际开发中，一个 image 文件往往通过继承另一个 image 文件，加上一些个性化设置而生成。举例来说，你可以在 Ubuntu 的 image 
+基础上，往里面加入 Apache 服务器，形成你的 image。   
     $ docker image ls # 列出本机的所有 image 文件。
     $ docker image rm [imageName] # 删除 image 文件
     
@@ -41,7 +44,8 @@ image 是二进制文件。实际开发中，一个 image 文件往往通过继�
     $ docker image ls
 现在，运行这个 image 文件。
     $ docker container run hello-world     #docker container run命令会从 image 文件，生成一个正在运行的容器实例。
-    注意，docker container run命令具有自动抓取 image 文件的功能。如果发现本地没有指定的 image 文件，就会从仓库自动抓取。因此，前面的docker image pull命令并不是必需的步骤。
+    注意，docker container run命令具有自动抓取 image 文件的功能。如果发现本地没有指定的 image 文件，就会从仓库自动抓取。因此，
+    前面的docker image pull命令并不是必需的步骤。
     
 有些容器不会自动终止，因为提供的是服务。比如，安装运行 Ubuntu 的 image，就可以在命令行体验 Ubuntu 系统。
     $ docker container ls
@@ -86,7 +90,8 @@ image 是二进制文件。实际开发中，一个 image 文件往往通过继�
     $ docker image build -t koa-demo .
     # 或者
     $ docker image build -t koa-demo:0.0.1 .
-上面代码中，-t参数用来指定 image 文件的名字，后面还可以用冒号指定标签。如果不指定，默认的标签就是latest。最后的那个点表示 Dockerfile 文件所在的路径，上例是当前路径，所以是一个点。
+上面代码中，-t参数用来指定 image 文件的名字，后面还可以用冒号指定标签。如果不指定，默认的标签就是latest。最后的那个点表示 Dockerfile 
+文件所在的路径，上例是当前路径，所以是一个点。
 如果运行成功，就可以看到新生成的 image 文件koa-demo了。
     $ docker image ls
 
@@ -105,7 +110,8 @@ docker container run命令会从 image 文件生成容器。
 这表示你已经在容器里面了，返回的提示符就是容器内部的 Shell 提示符。执行下面的命令。
     root@66d80f4aaf1e:/app# node demos/01.js
 这时，Koa 框架已经运行起来了。打开本机的浏览器，访问 http://127.0.0.1:8000，网页显示"Not Found"，这是因为这个 demo 没有写路由。
-这个例子中，Node 进程运行在 Docker 容器的虚拟环境里面，进程接触到的文件系统和网络接口都是虚拟的，与本机的文件系统和网络接口是隔离的，因此需要定义容器与物理机的端口映射（map）。
+这个例子中，Node 进程运行在 Docker 容器的虚拟环境里面，进程接触到的文件系统和网络接口都是虚拟的，与本机的文件系统和网络接口是隔离的，
+因此需要定义容器与物理机的端口映射（map）。
 
 现在，在容器的命令行，按下 Ctrl + c 停止 Node 进程，然后按下 Ctrl + d （或者输入 exit）退出容器。此外，也可以用docker container kill终止容器运行。
     # 在本机的另一个终端窗口，查出容器的 ID
@@ -122,7 +128,8 @@ docker container run命令会从 image 文件生成容器。
     $ docker container run --rm -p 8000:3000 -it koa-demo /bin/bash
 
 10.4 CMD 命令
-上一节的例子里面，容器启动以后，需要手动输入命令node demos/01.js。我们可以把这个命令写在 Dockerfile 里面，这样容器启动以后，这个命令就已经执行了，不用再手动输入了。
+上一节的例子里面，容器启动以后，需要手动输入命令node demos/01.js。我们可以把这个命令写在 Dockerfile 里面，这样容器启动以后，
+这个命令就已经执行了，不用再手动输入了。
     FROM node:8.4
     COPY . /app
     WORKDIR /app
@@ -130,8 +137,10 @@ docker container run命令会从 image 文件生成容器。
     EXPOSE 3000
     CMD node demos/01.js
 上面的 Dockerfile 里面，多了最后一行CMD node demos/01.js，它表示容器启动后自动执行node demos/01.js。
-你可能会问，RUN命令与CMD命令的区别在哪里？简单说，RUN命令在 image 文件的构建阶段执行，执行结果都会打包进入 image 文件；CMD命令则是在容器启动后执行。另外，一个 Dockerfile 可以包含多个RUN命令，但是只能有一个CMD命令。
-注意，指定了CMD命令以后，docker container run命令就不能附加命令了（比如前面的/bin/bash），否则它会覆盖CMD命令。现在，启动容器可以使用下面的命令。
+你可能会问，RUN命令与CMD命令的区别在哪里？简单说，RUN命令在 image 文件的构建阶段执行，执行结果都会打包进入 image 文件；
+CMD命令则是在容器启动后执行。另外，一个 Dockerfile 可以包含多个RUN命令，但是只能有一个CMD命令。
+注意，指定了CMD命令以后，docker container run命令就不能附加命令了（比如前面的/bin/bash），否则它会覆盖CMD命令。
+现在，启动容器可以使用下面的命令。
     $ docker container run --rm -p 8000:3000 -it koa-demo:0.0.1
 
 10.5 发布 image 文件
@@ -149,30 +158,22 @@ docker container run命令会从 image 文件生成容器。
 发布成功以后，登录 hub.docker.com，就可以看到已经发布的 image 文件。
 
 十一、其他有用的命令
-
 docker 的主要用法就是上面这些，此外还有几个命令，也非常有用。
-
 （1）docker container start
-
-前面的docker container run命令是新建容器，每运行一次，就会新建一个容器。同样的命令运行两次，就会生成两个一模一样的容器文件。如果希望重复使用容器，就要使用docker container start命令，它用来启动已经生成、已经停止运行的容器文件。
-
-
-    $ docker container start [containerID]
-
+前面的docker container run命令是新建容器，每运行一次，就会新建一个容器。同样的命令运行两次，就会生成两个一模一样的容器文件。
+如果希望重复使用容器，就要使用docker container start命令，它用来启动已经生成、已经停止运行的容器文件。
+   $ docker container start [containerID]
 （2）docker container stop
-
-前面的docker container kill命令终止容器运行，相当于向容器里面的主进程发出 SIGKILL 信号。而docker container stop命令也是用来终止容器运行，相当于向容器里面的主进程发出 SIGTERM 信号，然后过一段时间再发出 SIGKILL 信号。
-
-
+前面的docker container kill命令终止容器运行，相当于向容器里面的主进程发出 SIGKILL 信号。
+而docker container stop命令也是用来终止容器运行，相当于向容器里面的主进程发出 SIGTERM 信号，然后过一段时间再发出 SIGKILL 信号。
     $ bash container stop [containerID]
-
 这两个信号的差别是，应用程序收到 SIGTERM 信号以后，可以自行进行收尾清理工作，但也可以不理会这个信号。如果收到 SIGKILL 信号，就会强行立即终止，那些正在进行中的操作会全部丢失。
-
 （3）docker container logs
 docker container logs命令用来查看 docker 容器的输出，即容器里面 Shell 的标准输出。如果docker run命令运行容器的时候，没有使用-it参数，就要用这个命令查看输出。
     $ docker container logs [containerID]
 （4）docker container exec
-docker container exec命令用于进入一个正在运行的 docker 容器。如果docker run命令运行容器的时候，没有使用-it参数，就要用这个命令进入容器。一旦进入了容器，就可以在容器的 Shell 执行命令了。
+docker container exec命令用于进入一个正在运行的 docker 容器。如果docker run命令运行容器的时候，没有使用-it参数，就要用这个命令进入容器。
+一旦进入了容器，就可以在容器的 Shell 执行命令了。
     $ docker container exec -it [containerID] /bin/bash
 （5）docker container cp
 docker container cp命令用于从正在运行的 Docker 容器里面，将文件拷贝到本机。下面是拷贝到当前目录的写法。
