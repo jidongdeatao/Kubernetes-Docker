@@ -8,7 +8,7 @@ Docker简介：
 
     
 Docker安装：
-参考Dokcer-install.txt
+参照Docker安装指南
 
 安装完成后，运行下面的命令，验证是否安装成功。
 
